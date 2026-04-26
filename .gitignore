@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+.npm/
 
 # Expo
 .expo/
@@ -11,12 +12,19 @@ expo-env.d.ts
 
 # Native
 .kotlin/
+android/local.properties
+local.properties
 *.orig.*
+*.keystore
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
+GoogleService-Info.plist
+google-services.json
+android/app/google-services.json
+android/app/debug.keystore
 
 # Metro
 .metro-health-check*
@@ -31,13 +39,20 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
+.env.*
 .env*.local
+!.env.example
 
 # typescript
 *.tsbuildinfo
 
 app-example
 
-# generated native folders
-/ios
-/android
+# Native build output
+android/.gradle/
+android/.kotlin/
+android/app/build/
+android/app/.cxx/
+ios/build/
+ios/Pods/
