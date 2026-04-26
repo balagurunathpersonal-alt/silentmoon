@@ -107,18 +107,6 @@ npm run start:metro
 
 Starts Metro explicitly.
 
-## Appwrite Configuration
-
-Appwrite settings are defined in `constants/app-constants.ts`.
-
-Current values include:
-
-- Endpoint: `https://fra.cloud.appwrite.io/v1`
-- Project ID: `69ead33e003129ed4fea`
-- Android package: `com.balagurunath.srinivasan.silentMoon`
-- Deep link scheme: `appwrite-callback-69ead33e003129ed4fea`
-
-If you connect the app to a different Appwrite project, update these constants and make sure the OAuth callback/deep link settings match your Appwrite console configuration.
 
 ## Navigation Flow
 
