@@ -1,4 +1,5 @@
 import type { StackNavigationProp } from "@react-navigation/stack";
+import type { MainTabName } from "../viewmodels/tab.types";
 
 export type AuthMode = "signin" | "signup";
 
@@ -33,6 +34,11 @@ export type MusicPlayerParams = {
   id?: string;
 };
 
+export type ReminderTopicParams = {
+  id?: string;
+  title: string;
+};
+
 export type RootStackParamList = {
   Landing: undefined;
   OAuth:
@@ -44,15 +50,25 @@ export type RootStackParamList = {
     | undefined;
   SignIn: { mode?: AuthMode } | undefined;
   Welcome: undefined;
-  Topics: undefined;
+  Topics:
+    | {
+        reminderReturnTo?: "Profile";
+      }
+    | undefined;
   Reminder:
     | {
+        reminderReturnTo?: "Profile";
         topicId?: string;
         topicTitle?: string;
         topic?: string;
+        selectedTopic?: ReminderTopicParams;
       }
     | undefined;
-  MainTabs: undefined;
+  MainTabs:
+    | {
+        screen?: MainTabName;
+      }
+    | undefined;
   CourseDetail: { course: CourseDetailParams };
   MusicPlayer: { music: MusicPlayerParams };
 };

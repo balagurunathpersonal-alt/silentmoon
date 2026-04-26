@@ -1,3 +1,4 @@
+import { useRoute } from "@react-navigation/native";
 import {
   FlatList,
   ImageBackground,
@@ -8,70 +9,28 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundPattern from "../../assets/images/svg/topicsbg.svg";
+import { TOPIC_STRINGS } from "../../constants/topic-strings";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 
-const topics = [
-  {
-    id: "1",
-    title: "Reduce Stress",
-    image: require("../../assets/images/stress.png"),
-  },
-  {
-    id: "2",
-    title: "Improve Performance",
-    image: require("../../assets/images/performance.png"),
-  },
-  {
-    id: "3",
-    title: "Increase Happiness",
-    image: require("../../assets/images/happiness.png"),
-  },
-  {
-    id: "4",
-    title: "Reduce Anxiety",
-    image: require("../../assets/images/anxiety.png"),
-  },
-  {
-    id: "5",
-    title: "Personal Growth",
-    image: require("../../assets/images/growth.png"),
-  },
-  {
-    id: "6",
-    title: "Better Sleep",
-    image: require("../../assets/images/sleep.png"),
-  },
-  {
-    id: "7",
-    title: "Focus",
-    image: require("../../assets/images/focus.png"),
-  },
-  {
-    id: "8",
-    title: "Meditation",
-    image: require("../../assets/images/meditation.png"),
-  },
-  {
-    id: "9",
-    title: "Calm Mind",
-    image: require("../../assets/images/calm.png"),
-  },
-  {
-    id: "10",
-    title: "Confidence",
-    image: require("../../assets/images/confident.png"),
-  },
-  {
-    id: "11",
-    title: "Relaxation",
-    image: require("../../assets/images/relaxation.png"),
-  },
-  {
-    id: "12",
-    title: "Energy",
-    image: require("../../assets/images/energy.png"),
-  },
-];
+const topicImages = {
+  anxiety: require("../../assets/images/anxiety.png"),
+  calm: require("../../assets/images/calm.png"),
+  confident: require("../../assets/images/confident.png"),
+  energy: require("../../assets/images/energy.png"),
+  focus: require("../../assets/images/focus.png"),
+  growth: require("../../assets/images/growth.png"),
+  happiness: require("../../assets/images/happiness.png"),
+  meditation: require("../../assets/images/meditation.png"),
+  performance: require("../../assets/images/performance.png"),
+  relaxation: require("../../assets/images/relaxation.png"),
+  sleep: require("../../assets/images/sleep.png"),
+  stress: require("../../assets/images/stress.png"),
+};
+
+const topics = TOPIC_STRINGS.topics.map((topic) => ({
+  ...topic,
+  image: topicImages[topic.imageName],
+}));
 
 const TopicCard = ({ item, onPress }) => (
   <TouchableOpacity
@@ -93,12 +52,19 @@ const TopicCard = ({ item, onPress }) => (
 
 export default function TopicsScreen() {
   const navigation = useAppNavigationHandler();
+  const route = useRoute();
+  const reminderReturnTo = route.params?.reminderReturnTo;
 
   const handlePress = (item) => {
     // Navigate to the reminder screen and pass topic details as params
     navigation.navigate("Reminder", {
+      reminderReturnTo,
       topicId: item.id,
       topicTitle: item.title,
+      selectedTopic: {
+        id: item.id,
+        title: item.title,
+      },
     });
   };
   return (
@@ -109,9 +75,11 @@ export default function TopicsScreen() {
           <BackgroundPattern />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>What Brings you</Text>
-          <Text style={styles.title2}>to Silent Moon?</Text>
-          <Text style={styles.subtitle}>choose a topic to focus on:</Text>
+          <Text style={styles.title}>{TOPIC_STRINGS.screen.title}</Text>
+          <Text style={styles.title2}>
+            {TOPIC_STRINGS.screen.titleSecondLine}
+          </Text>
+          <Text style={styles.subtitle}>{TOPIC_STRINGS.screen.subtitle}</Text>
         </View>
 
         <FlatList

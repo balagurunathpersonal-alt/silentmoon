@@ -1,11 +1,13 @@
 // app/reminder.tsx
 import { useTheme } from "@/themes/theme-context";
+import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 // notifications handled by react-native-push-notification in viewmodel
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackgroundPattern from "../../assets/images/svg/loginBG.svg";
+import { REMINDER_STRINGS } from "../../constants/reminder-strings";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
 import { useReminderViewModel } from "../../viewmodels/reminder.viewmodel";
@@ -14,10 +16,11 @@ type Theme = typeof lightTheme | typeof darkTheme;
 
 // Notification display/behavior handled in native module configuration
 
-const days = ["SU", "M", "T", "W", "TH", "F", "S"];
+const { days } = REMINDER_STRINGS;
 
 export default function ReminderScreen() {
   const {
+    content,
     topic,
     time,
     setTime,
@@ -27,6 +30,7 @@ export default function ReminderScreen() {
     toggleDay,
     scheduleReminder,
     cancelScheduled,
+    closeReminderFlow,
   } = useReminderViewModel();
 
   const { theme } = useTheme();
@@ -37,18 +41,31 @@ export default function ReminderScreen() {
   return (
     <SafeAreaView style={styleSheet.safeArea}>
       <View style={styleSheet.container}>
+        <TouchableOpacity
+          accessibilityLabel={REMINDER_STRINGS.labels.backAccessibility}
+          accessibilityRole="button"
+          style={styleSheet.backButton}
+          onPress={() => navigation.backOrReplace("Topics")}
+        >
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            color={styleSheet.backIcon.color}
+          />
+        </TouchableOpacity>
         <View style={{ flex: 1 }} />
         {/* Background SVG pattern */}
         <View style={styleSheet.background}>
           <BackgroundPattern />
         </View>
 
-        <Text style={styleSheet.header}>
-          What time would you like to meditate?
-        </Text>
-        <Text style={styleSheet.subHeader}>
-          Any time you can choose but We recommend first thing in the morning.
-        </Text>
+        {topic && (
+          <Text style={styleSheet.topicLabel}>
+            {`${REMINDER_STRINGS.labels.topicPrefix} ${topic}`}
+          </Text>
+        )}
+        <Text style={styleSheet.header}>{content.timeTitle}</Text>
+        <Text style={styleSheet.subHeader}>{content.timeSubtitle}</Text>
 
         <TouchableOpacity
           style={styleSheet.timeButton}
@@ -74,12 +91,8 @@ export default function ReminderScreen() {
           />
         )}
 
-        <Text style={styleSheet.header}>
-          Which day would you like to meditate?
-        </Text>
-        <Text style={styleSheet.subHeader}>
-          Everyday is best, but we recommend picking at least five.
-        </Text>
+        <Text style={styleSheet.header}>{content.dayTitle}</Text>
+        <Text style={styleSheet.subHeader}>{content.daySubtitle}</Text>
 
         <View style={styleSheet.daysRow}>
           {days.map((day) => (
@@ -109,7 +122,7 @@ export default function ReminderScreen() {
           textStyle={styleSheet.saveText}
           containerStyle={styleSheet.saveButton}
         >
-          {"SAVE"}
+          {REMINDER_STRINGS.buttons.save}
         </SilentMoonButton>
 
         {/*
@@ -128,8 +141,10 @@ export default function ReminderScreen() {
       </TouchableOpacity>
       */}
 
-        <TouchableOpacity onPress={() => navigation.resetTo("MainTabs")}>
-          <Text style={styleSheet.noThanks}>NO THANKS</Text>
+        <TouchableOpacity onPress={closeReminderFlow}>
+          <Text style={styleSheet.noThanks}>
+            {REMINDER_STRINGS.buttons.noThanks}
+          </Text>
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
       </View>
@@ -145,8 +160,35 @@ const styles = (appTheme: Theme) =>
       padding: 20,
       backgroundColor: appTheme.background,
     },
+    backButton: {
+      alignItems: "center",
+      height: 40,
+      justifyContent: "center",
+      left: 16,
+      position: "absolute",
+      top: 16,
+      width: 40,
+      zIndex: 1,
+      borderRadius: 20,
+      backgroundColor: appTheme.textBoxBackground || "rgba(0,0,0,0.04)",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    backIcon: {
+      color: appTheme.text,
+    },
     // container: { flex: 1, padding: 20, justifyContent: "center" },
     header: { fontSize: 20, fontWeight: "700", marginBottom: 8 },
+    topicLabel: {
+      color: appTheme.buttonColor,
+      fontSize: 13,
+      fontWeight: "700",
+      marginBottom: 8,
+      textTransform: "uppercase",
+    },
     subHeader: {
       fontSize: 14,
       color: appTheme.secondaryTextColor,

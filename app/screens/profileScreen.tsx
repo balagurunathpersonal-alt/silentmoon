@@ -34,9 +34,15 @@ const SettingsRow = ({ isLast, label, value }: SettingsRowProps) => (
 const ProfileScreen = () => {
   const {
     avatarInitial,
+    chooseReminderLabel,
     isSigningOut,
+    loggingOutLabel,
+    logoutLabel,
     name,
     onLogoutPress,
+    onReminderPress,
+    reminderSubtitle,
+    reminderTitle,
     sectionTitle,
     settings,
     subtitle,
@@ -78,6 +84,18 @@ const ProfileScreen = () => {
 
         <TouchableOpacity
           activeOpacity={0.82}
+          onPress={onReminderPress}
+          style={styleSheet.reminderButton}
+        >
+          <View style={styleSheet.reminderTextBlock}>
+            <Text style={styleSheet.reminderTitle}>{reminderTitle}</Text>
+            <Text style={styleSheet.reminderSubtitle}>{reminderSubtitle}</Text>
+          </View>
+          <Text style={styleSheet.reminderAction}>{chooseReminderLabel}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={0.82}
           disabled={isSigningOut}
           onPress={onLogoutPress}
           style={[
@@ -86,7 +104,7 @@ const ProfileScreen = () => {
           ]}
         >
           <Text style={styleSheet.logoutButtonText}>
-            {isSigningOut ? "Logging out..." : "Log out"}
+            {isSigningOut ? loggingOutLabel : logoutLabel}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -179,6 +197,39 @@ const styles = (theme: Theme) =>
       borderRadius: 12,
       borderWidth: 1,
       overflow: "hidden",
+    },
+    reminderAction: {
+      color: theme.buttonColor,
+      fontSize: 13,
+      fontWeight: "700",
+      marginLeft: 12,
+      textAlign: "right",
+    },
+    reminderButton: {
+      alignItems: "center",
+      backgroundColor: "#FFFFFF",
+      borderColor: "#EBEAEC",
+      borderRadius: 12,
+      borderWidth: 1,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 18,
+      paddingHorizontal: 18,
+      paddingVertical: 16,
+    },
+    reminderSubtitle: {
+      color: theme.secondaryTextColor,
+      fontSize: 13,
+      fontWeight: "600",
+      marginTop: 4,
+    },
+    reminderTextBlock: {
+      flex: 1,
+    },
+    reminderTitle: {
+      color: theme.primaryTextColor,
+      fontSize: 16,
+      fontWeight: "700",
     },
     logoutButton: {
       alignItems: "center",
