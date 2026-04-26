@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Image } from "react-native";
 import BasicsBG from "../assets/images/svg/basicsbg.svg";
+import RelaxBG from "../assets/images/svg/relaxBG.svg";
 import { useAuth } from "../services/auth-context";
 import { getRecommendations } from "../services/recommendation-service";
 import { useTheme } from "../themes/theme-context";
@@ -83,6 +84,7 @@ const useHomeViewModelBase = () => {
         duration: "3-10 MIN",
         favoriteCount: "24,234 Favorites",
         heroImageUrl: basicsHeroImageUrl,
+        id: "course-basics",
         listeningCount: "34,234 Listening",
         narratorSessions: {
           female: [
@@ -133,11 +135,13 @@ const useHomeViewModelBase = () => {
       },
       {
         backgroundColor: "#FFC97E",
+        backgroundImage: RelaxBG,
         description:
           "Soft soundscapes and calming prompts to help your body release tension and move into a quieter state.",
         duration: "3-10 MIN",
         favoriteCount: "18,912 Favorites",
         heroImageUrl: relaxationHeroImageUrl,
+        id: "course-relaxation",
         listeningCount: "28,440 Listening",
         narratorSessions: {
           female: [

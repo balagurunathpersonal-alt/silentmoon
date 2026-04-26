@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogoWhite from "../../assets/images/svg/logo-white.svg";
+import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
 import { useSleepViewModel } from "../../viewmodels/sleep.viewmodel";
 import { ActionCard, RecommendationItem } from "../../viewmodels/tab.types";
@@ -19,12 +20,14 @@ type Theme = typeof lightTheme | typeof darkTheme;
 const SleepCard = ({
   backgroundColor,
   duration,
+  onPress,
   subtitle,
   textColor = "#FFFFFF",
   title,
-}: ActionCard) => (
+}: ActionCard & { onPress: () => void }) => (
   <TouchableOpacity
     activeOpacity={0.86}
+    onPress={onPress}
     style={[stylesBase.card, { backgroundColor }]}
   >
     <View>
@@ -37,15 +40,28 @@ const SleepCard = ({
       <Text style={[stylesBase.cardTime, { color: textColor }]}>
         {duration}
       </Text>
-      <TouchableOpacity activeOpacity={0.78} style={stylesBase.startButton}>
+      <TouchableOpacity
+        activeOpacity={0.78}
+        onPress={onPress}
+        style={stylesBase.startButton}
+      >
         <Text style={stylesBase.startButtonText}>START</Text>
       </TouchableOpacity>
     </View>
   </TouchableOpacity>
 );
 
-const RecommendationCard = ({ artColor, meta, title }: RecommendationItem) => (
-  <TouchableOpacity activeOpacity={0.86} style={stylesBase.recommendationCard}>
+const RecommendationCard = ({
+  artColor,
+  meta,
+  onPress,
+  title,
+}: RecommendationItem & { onPress: () => void }) => (
+  <TouchableOpacity
+    activeOpacity={0.86}
+    onPress={onPress}
+    style={stylesBase.recommendationCard}
+  >
     <View
       style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
     />
@@ -64,7 +80,42 @@ const SleepScreen = () => {
     theme,
     title,
   } = useSleepViewModel();
+  const navigation = useAppNavigationHandler();
   const styleSheet = styles(theme);
+  const openCourseDetail = (course: ActionCard) => {
+    navigation.navigate("CourseDetail", {
+      course: {
+        backgroundColor: course.backgroundColor,
+        description: course.description ?? "",
+        duration: course.duration,
+        favoriteCount: course.favoriteCount,
+        heroImageUrl: course.heroImageUrl,
+        id: course.id,
+        listeningCount: course.listeningCount,
+        narratorSessions: course.narratorSessions,
+        subtitle: course.subtitle,
+        textColor: course.textColor,
+        title: course.title,
+      },
+    });
+  };
+  const openRecommendation = (item: RecommendationItem) => {
+    navigation.navigate("CourseDetail", {
+      course: {
+        backgroundColor: item.artColor ?? "#F5F5FF",
+        description:
+          item.description ??
+          "A soothing sleep session for helping the body unwind and the mind drift toward rest.",
+        duration: item.duration ?? "12 MIN",
+        favoriteCount: "22,640 Favorites",
+        id: item.id,
+        listeningCount: "35,210 Listening",
+        subtitle: item.meta,
+        textColor: "#3F414E",
+        title: item.title,
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={styleSheet.safeArea}>
@@ -81,7 +132,11 @@ const SleepScreen = () => {
           <Text style={styleSheet.subtitle}>{subtitle}</Text>
         </View>
 
-        <TouchableOpacity activeOpacity={0.86} style={styleSheet.featuredCard}>
+        <TouchableOpacity
+          activeOpacity={0.86}
+          onPress={() => openCourseDetail(featured)}
+          style={styleSheet.featuredCard}
+        >
           <Image source={featured.image} style={styleSheet.featuredImage} />
           <View style={styleSheet.featuredContent}>
             <Text style={styleSheet.featuredTitle}>{featured.title}</Text>
@@ -99,7 +154,11 @@ const SleepScreen = () => {
 
         <View style={styleSheet.cardsRow}>
           {cards.map((card) => (
-            <SleepCard key={card.title} {...card} />
+            <SleepCard
+              key={card.title}
+              {...card}
+              onPress={() => openCourseDetail(card)}
+            />
           ))}
         </View>
 
@@ -110,7 +169,12 @@ const SleepScreen = () => {
         <HorizontalCarousel
           data={recommendations}
           keyExtractor={(item) => item.title}
-          renderItem={({ item }) => <RecommendationCard {...item} />}
+          renderItem={({ item }) => (
+            <RecommendationCard
+              {...item}
+              onPress={() => openRecommendation(item)}
+            />
+          )}
           contentContainerStyle={styleSheet.recommendationsRow}
         />
       </ScrollView>

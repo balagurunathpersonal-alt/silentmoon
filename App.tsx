@@ -6,6 +6,7 @@ import LoadingScreen from "./app/components/LoadingScreen";
 import OAuthScreen from "./app/oauth";
 import CourseDetailScreen from "./app/screens/course-detail";
 import MainTabs from "./app/screens/maintabs";
+import MusicPlayerScreen from "./app/screens/music-player";
 import ReminderScreen from "./app/screens/reminder";
 import SignInScreen from "./app/screens/signin";
 import SignInSignupScreen from "./app/screens/signupsignIn";
@@ -29,6 +30,7 @@ const PROTECTED_ROUTES = new Set<string>([
   "Sleep",
   "Meditate",
   "Music",
+  "MusicPlayer",
   "Profile",
   "CourseDetail",
 ]);
@@ -45,6 +47,7 @@ const linking = {
       Reminder: "reminder",
       MainTabs: "main",
       CourseDetail: "course-detail",
+      MusicPlayer: "music-player",
     },
   },
 };
@@ -107,6 +110,7 @@ function RootNavigator() {
         <Stack.Screen name="Reminder" component={ReminderScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="CourseDetail" component={CourseDetailScreen} />
+        <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

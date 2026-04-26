@@ -45,14 +45,20 @@ const DEFAULT_DESCRIPTION =
 const renderSessionItem = ({
   index,
   item,
+  onPress,
 }: {
   index: number;
   item: CourseSession;
+  onPress: (item: CourseSession) => void;
 }) => {
   const isActive = index === 0;
 
   return (
-    <TouchableOpacity activeOpacity={0.78} style={styles.sessionRow}>
+    <TouchableOpacity
+      activeOpacity={0.78}
+      onPress={() => onPress(item)}
+      style={styles.sessionRow}
+    >
       <View
         style={[
           styles.playButton,
@@ -100,6 +106,21 @@ const CourseDetailScreen = () => {
 
   const handleNarratorPress = (index: number) => {
     setActiveNarratorIndex(index);
+  };
+
+  const handleSessionPress = (session: CourseSession) => {
+    navigation.navigate("MusicPlayer", {
+      music: {
+        description: course.description || DEFAULT_DESCRIPTION,
+        duration: session.duration,
+        id: `${course.id ?? course.title}-${session.title}`
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, ""),
+        name: session.title,
+        url: session.audioUrl,
+      },
+    });
   };
 
   const handleListTouchStart = (event: GestureResponderEvent) => {
@@ -239,7 +260,13 @@ const CourseDetailScreen = () => {
         <FlatList
           data={narratorSessions[activeNarratorIndex]}
           keyExtractor={(item, index) => `${item.title}-${index}`}
-          renderItem={renderSessionItem}
+          renderItem={({ index, item }) =>
+            renderSessionItem({
+              index,
+              item,
+              onPress: handleSessionPress,
+            })
+          }
           showsVerticalScrollIndicator
           style={styles.sessionFlatList}
           contentContainerStyle={styles.sessionList}

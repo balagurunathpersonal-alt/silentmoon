@@ -6,12 +6,14 @@ export type MainTabName = "Home" | "Sleep" | "Meditate" | "Music" | "Profile";
 export type FeatherIconName = React.ComponentProps<typeof Feather>["name"];
 
 export type ActionCard = {
+  audioUrl?: string;
   backgroundColor: string;
   backgroundImage?: React.ComponentType<SvgProps>;
   description?: string;
   duration: string;
   favoriteCount?: string;
   heroImageUrl?: string;
+  id: string;
   lessons?: string[];
   listeningCount?: string;
   narratorSessions?: {
@@ -24,7 +26,11 @@ export type ActionCard = {
 };
 
 export type RecommendationItem = {
+  audioUrl?: string;
   artColor?: string;
+  description?: string;
+  duration?: string;
+  id: string;
   image?: ImageSourcePropType;
   meta: string;
   title: string;

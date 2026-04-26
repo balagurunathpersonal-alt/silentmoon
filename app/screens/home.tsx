@@ -1,10 +1,10 @@
 import React from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from "../../assets/images/svg/logo.svg";
@@ -31,16 +31,21 @@ const CourseCard = ({
     style={[stylesBase.card, { backgroundColor }]}
   >
     {BackgroundImage && (
+      // <View style={stylesBase.bgContainer}>
       <BackgroundImage style={stylesBase.backgroundImageStyle} />
+      // </View>
     )}
+    <View style={{ flex: 1 }} />
     <Text style={[stylesBase.cardTitle, { color: textColor }]}>{title}</Text>
     <Text style={[stylesBase.cardSubtitle, { color: textColor }]}>
       {subtitle}
     </Text>
+    <View style={{ flex: 1 }} />
     <View style={stylesBase.cardFooter}>
       <Text style={[stylesBase.cardTime, { color: textColor }]}>
         {duration}
       </Text>
+      <View style={{ flex: 1 }} />
       <TouchableOpacity
         activeOpacity={0.78}
         onPress={onPress}
@@ -52,8 +57,17 @@ const CourseCard = ({
   </TouchableOpacity>
 );
 
-const RecommendationCard = ({ artColor, meta, title }: RecommendationItem) => (
-  <TouchableOpacity activeOpacity={0.86} style={stylesBase.recommendationCard}>
+const RecommendationCard = ({
+  artColor,
+  meta,
+  onPress,
+  title,
+}: RecommendationItem & { onPress: () => void }) => (
+  <TouchableOpacity
+    activeOpacity={0.86}
+    onPress={onPress}
+    style={stylesBase.recommendationCard}
+  >
     <View
       style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
     />
@@ -74,6 +88,23 @@ const HomeScreen = () => {
   } = useHomeViewModel();
   const navigation = useAppNavigationHandler();
   const styleSheet = styles(theme);
+  const openRecommendation = (item: RecommendationItem) => {
+    navigation.navigate("CourseDetail", {
+      course: {
+        backgroundColor: item.artColor ?? "#8E97FD",
+        description:
+          item.description ??
+          "A guided Silent Moon session designed to help you pause, reset, and return with a calmer mind.",
+        duration: item.duration ?? "10 MIN",
+        favoriteCount: "18,240 Favorites",
+        id: item.id,
+        listeningCount: "27,580 Listening",
+        subtitle: item.meta,
+        textColor: "#3F414E",
+        title: item.title,
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={styleSheet.safeArea}>
@@ -103,6 +134,7 @@ const HomeScreen = () => {
                     duration: course.duration,
                     favoriteCount: course.favoriteCount,
                     heroImageUrl: course.heroImageUrl,
+                    id: course.id,
                     listeningCount: course.listeningCount,
                     narratorSessions: course.narratorSessions,
                     subtitle: course.subtitle,
@@ -136,7 +168,12 @@ const HomeScreen = () => {
         <HorizontalCarousel
           data={recommendations}
           keyExtractor={(item) => item.title}
-          renderItem={({ item }) => <RecommendationCard {...item} />}
+          renderItem={({ item }) => (
+            <RecommendationCard
+              {...item}
+              onPress={() => openRecommendation(item)}
+            />
+          )}
           contentContainerStyle={styleSheet.recommendationsRow}
         />
       </ScrollView>
@@ -150,12 +187,20 @@ const stylesBase = StyleSheet.create({
     flex: 1,
     minHeight: 210,
     padding: 18,
-    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    overflow: "hidden",
   },
   cardFooter: {
-    alignItems: "center",
+    // alignItems: "center",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // gap: 15,
+
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start", // equal space between duration and button
+    alignItems: "center",
+    gap: 10,
   },
   cardSubtitle: {
     fontSize: 11,
@@ -170,12 +215,20 @@ const stylesBase = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
   },
+  // bgContainer: {
+  //   flex: 1,
+  //   // padding: -18,
+  //   alignItems: "flex-end", // Align left
+  //   justifyContent: "flex-end", //
+  //   overflow: "hidden",
+  // },
   backgroundImageStyle: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1, // Fill the screen
     position: "absolute",
-    top: 10, // distance from top
-    right: 10, // distance from right
+    top: -10,
+    right: -10,
+    overflow: "hidden",
+    // marginRight: -10,
+    // marginTop: -10,
   },
   startButton: {
     alignItems: "center",
