@@ -1,6 +1,6 @@
 //import { setCredentials } from "@/lib/keychainHandler";
 import { appwriteService } from "@/services/appwrite-service";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { ID, Models } from "react-native-appwrite";
 import { SecureStoreHandler } from "./secureStoreHandler";
@@ -21,22 +21,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
 
-  useEffect(() => {
-    void refreshUser();
-  }, []);
-
-  const refreshUser = async () => {
-    setIsLoadingUser(true);
-    const creds = await SecureStoreHandler.getSession();
-    if (creds && creds.username.length > 0) {
-      await fetchUserData();
-    } else {
-      setUser(null);
-      setIsLoadingUser(false);
-    }
-  };
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const userData = await appwriteService.account.get();
       console.debug(
@@ -52,7 +37,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoadingUser(false);
     }
-  };
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    setIsLoadingUser(true);
+    const creds = await SecureStoreHandler.getSession();
+    if (creds && creds.username.length > 0) {
+      await fetchUserData();
+    } else {
+      setUser(null);
+      setIsLoadingUser(false);
+    }
+  }, [fetchUserData]);
+
+  useEffect(() => {
+    void refreshUser();
+  }, [refreshUser]);
 
   const signup = async (email: string, password: string) => {
     try {

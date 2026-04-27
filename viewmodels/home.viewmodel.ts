@@ -69,7 +69,7 @@ const useHomeViewModelBase = () => {
     theme,
     greeting,
     subtitle,
-    courses: ([
+    courses: [
       {
         ...COURSE_CONTENT.home.courses.basics,
         backgroundImage: BasicsBG,
@@ -80,7 +80,7 @@ const useHomeViewModelBase = () => {
         backgroundImage: RelaxBG,
         heroImageUrl: relaxationHeroImageUrl,
       },
-    ] satisfies ActionCard[]) as ActionCard[],
+    ] satisfies ActionCard[] as ActionCard[],
     dailyThought: COURSE_CONTENT.home.dailyThought,
     sectionTitle: COURSE_CONTENT.common.recommendedForYou,
     recommendations: [] satisfies RecommendationItem[],

@@ -19,4 +19,4 @@ export const AppWrite_Constants = {
   collectionId: "64b8c9e5a0f1c2e7b4d9",
 } as const;
 
-export type AppWrite_Constants = typeof AppWrite_Constants;
+export type AppWriteConstants = typeof AppWrite_Constants;

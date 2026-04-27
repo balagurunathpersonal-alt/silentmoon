@@ -4,6 +4,8 @@ import type { MainTabName } from "../viewmodels/tab.types";
 export type AuthMode = "signin" | "signup";
 
 export type CourseSession = {
+  id?: string;
+  courseSessionID?: string;
   duration: string;
   title: string;
   audioUrl: string;
@@ -15,7 +17,7 @@ export type CourseDetailParams = {
   duration: string;
   favoriteCount?: string;
   heroImageUrl?: string;
-  id?: string;
+  courseID?: string;
   listeningCount?: string;
   narratorSessions?: {
     female: CourseSession[];
@@ -41,13 +43,6 @@ export type ReminderTopicParams = {
 
 export type RootStackParamList = {
   Landing: undefined;
-  OAuth:
-    | {
-        userId?: string | string[];
-        secret?: string | string[];
-        error?: string | string[];
-      }
-    | undefined;
   SignIn: { mode?: AuthMode } | undefined;
   Welcome: undefined;
   Topics:

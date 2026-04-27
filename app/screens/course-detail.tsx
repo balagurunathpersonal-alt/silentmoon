@@ -2,14 +2,14 @@ import { Feather } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React, { useMemo, useRef, useState } from "react";
 import {
-    Dimensions,
-    FlatList,
-    GestureResponderEvent,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  FlatList,
+  GestureResponderEvent,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { CourseSession, RootStackParamList } from "../../types/navigation";
@@ -23,17 +23,20 @@ const HERO_HEIGHT = 289;
 
 const DEFAULT_SESSIONS = [
   {
+    id: "default-focus-attention",
     audioUrl:
       "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
     duration: "10 MIN",
     title: "Focus Attention",
   },
   {
+    id: "default-body-scan",
     audioUrl: "https://filesamples.com/samples/audio/mp3/sample1.mp3",
     duration: "5 MIN",
     title: "Body Scan",
   },
   {
+    id: "default-making-happiness",
     audioUrl: "https://filesamples.com/samples/audio/mp3/sample2.mp3",
     duration: "3 MIN",
     title: "Making Happiness",
@@ -113,7 +116,7 @@ const CourseDetailScreen = () => {
       music: {
         description: course.description || DEFAULT_DESCRIPTION,
         duration: session.duration,
-        id: `${course.id ?? course.title}-${session.title}`
+        id: `${course.courseID ?? course.title}-${session.title}`
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, ""),
@@ -259,7 +262,9 @@ const CourseDetailScreen = () => {
       >
         <FlatList
           data={narratorSessions[activeNarratorIndex]}
-          keyExtractor={(item, index) => `${item.title}-${index}`}
+          keyExtractor={(item, index) =>
+            item.id ?? item.courseSessionID ?? `${item.title}-${index}`
+          }
           renderItem={({ index, item }) =>
             renderSessionItem({
               index,

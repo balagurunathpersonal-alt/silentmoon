@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PlaceholderCarousel from "../../assets/images/placeholder-coming-soon-160x110.svg";
 import Logo from "../../assets/images/svg/logo.svg";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
@@ -64,7 +65,15 @@ const RecommendationCard = ({
   >
     {image ? (
       <Image source={image} style={stylesBase.recommendationArt} />
-    ) : null}
+    ) : (
+      <View style={stylesBase.recommendationArt}>
+        <View style={stylesBase.placeholderWrapper}>
+          <View style={stylesBase.placeholderInner}>
+            <PlaceholderCarousel width={120} height={80} />
+          </View>
+        </View>
+      </View>
+    )}
     <Text style={stylesBase.recommendationTitle}>{title}</Text>
     <Text style={stylesBase.recommendationMeta}>{meta}</Text>
   </TouchableOpacity>
@@ -90,7 +99,7 @@ const MeditateScreen = () => {
         duration: course.duration,
         favoriteCount: course.favoriteCount,
         heroImageUrl: course.heroImageUrl,
-        id: course.id,
+        courseID: course.courseID,
         listeningCount: course.listeningCount,
         narratorSessions: course.narratorSessions,
         subtitle: course.subtitle,
@@ -108,7 +117,7 @@ const MeditateScreen = () => {
           "A guided meditation practice for building steadier attention and a softer inner pace.",
         duration: item.duration ?? "10 MIN",
         favoriteCount: "16,920 Favorites",
-        id: item.id,
+        courseID: item.id,
         listeningCount: "24,810 Listening",
         subtitle: item.meta,
         textColor: "#3F414E",
@@ -156,7 +165,7 @@ const MeditateScreen = () => {
         <View style={styleSheet.cardsRow}>
           {cards.map((card) => (
             <PracticeCard
-              key={card.title}
+              key={card.courseID}
               {...card}
               onPress={() => openCourseDetail(card)}
             />
@@ -169,13 +178,14 @@ const MeditateScreen = () => {
 
         <HorizontalCarousel
           data={recommendations}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <RecommendationCard
               {...item}
               onPress={() => openRecommendation(item)}
             />
           )}
+          placeholder={<PlaceholderCarousel width={160} height={110} />}
           contentContainerStyle={styleSheet.recommendationsRow}
         />
       </ScrollView>
@@ -228,6 +238,18 @@ const stylesBase = StyleSheet.create({
     marginBottom: 12,
     resizeMode: "cover",
     width: "100%",
+  },
+  placeholderWrapper: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  placeholderInner: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    overflow: "hidden",
   },
   recommendationCard: {
     flex: 1,

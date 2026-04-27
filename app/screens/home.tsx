@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -7,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PlaceholderCarousel from "../../assets/images/placeholder-coming-soon-160x110.svg";
 import Logo from "../../assets/images/svg/logo.svg";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
@@ -59,6 +61,7 @@ const CourseCard = ({
 
 const RecommendationCard = ({
   artColor,
+  image,
   meta,
   onPress,
   title,
@@ -68,9 +71,19 @@ const RecommendationCard = ({
     onPress={onPress}
     style={stylesBase.recommendationCard}
   >
-    <View
-      style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
-    />
+    {image ? (
+      <Image source={image} style={stylesBase.recommendationArt} />
+    ) : (
+      <View
+        style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
+      >
+        <View style={stylesBase.placeholderWrapper}>
+          <View style={stylesBase.placeholderInner}>
+            <PlaceholderCarousel width={120} height={80} />
+          </View>
+        </View>
+      </View>
+    )}
     <Text style={stylesBase.recommendationTitle}>{title}</Text>
     <Text style={stylesBase.recommendationMeta}>{meta}</Text>
   </TouchableOpacity>
@@ -97,7 +110,7 @@ const HomeScreen = () => {
           "A guided Silent Moon session designed to help you pause, reset, and return with a calmer mind.",
         duration: item.duration ?? "10 MIN",
         favoriteCount: "18,240 Favorites",
-        id: item.id,
+        courseID: item.id,
         listeningCount: "27,580 Listening",
         subtitle: item.meta,
         textColor: "#3F414E",
@@ -124,7 +137,7 @@ const HomeScreen = () => {
         <View style={styleSheet.cardsRow}>
           {courses.map((course) => (
             <CourseCard
-              key={course.title}
+              key={course.courseID}
               {...course}
               onPress={() =>
                 navigation.navigate("CourseDetail", {
@@ -134,7 +147,7 @@ const HomeScreen = () => {
                     duration: course.duration,
                     favoriteCount: course.favoriteCount,
                     heroImageUrl: course.heroImageUrl,
-                    id: course.id,
+                    courseID: course.courseID,
                     listeningCount: course.listeningCount,
                     narratorSessions: course.narratorSessions,
                     subtitle: course.subtitle,
@@ -167,13 +180,14 @@ const HomeScreen = () => {
 
         <HorizontalCarousel
           data={recommendations}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <RecommendationCard
               {...item}
               onPress={() => openRecommendation(item)}
             />
           )}
+          placeholder={<PlaceholderCarousel width={160} height={110} />}
           contentContainerStyle={styleSheet.recommendationsRow}
         />
       </ScrollView>
@@ -248,6 +262,18 @@ const stylesBase = StyleSheet.create({
     height: 110,
     marginBottom: 12,
     width: "100%",
+  },
+  placeholderWrapper: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  placeholderInner: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    overflow: "hidden",
   },
   recommendationCard: {
     flex: 1,

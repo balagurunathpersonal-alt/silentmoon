@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="No image available">
+  <title>No Image</title>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#F2F3F7"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8E97FD"/>
+      <stop offset="100%" stop-color="#7A86F5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Subtle decorative wave using app accent -->
+  <path d="M0 140 C60 110 120 170 200 140 C260 115 320 150 320 150 L320 200 L0 200 Z"
+        fill="url(#accentGrad)" opacity="0.08" />
+
+  <!-- Moon motif -->
+  <g transform="translate(220,36)">
+    <circle cx="0" cy="0" r="28" fill="#FFFFFF" opacity="0.9" />
+    <circle cx="6" cy="-6" r="22" fill="#8E97FD" opacity="0.18" />
+  </g>
+
+  <!-- Placeholder icon box and minimal marks -->
+  <rect x="28" y="30" width="88" height="88" rx="10" fill="#F8FAFC" stroke="#E6EAF2" />
+  <path d="M128 70 L198 110 L242 82 L298 130" stroke="#D0D8ED" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="72" cy="74" r="6" fill="#D0D8ED" />
+
+  <!-- Label -->
+  <text x="50%" y="78%" font-family="Inter, Roboto, Arial, sans-serif" font-size="14" fill="#3F414E" text-anchor="middle">No Image</text>
+
+  <!-- Small branded accent bar -->
+  <rect x="20" y="168" width="280" height="6" rx="3" fill="#8E97FD" opacity="0.12" />
+</svg>

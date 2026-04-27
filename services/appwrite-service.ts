@@ -255,16 +255,6 @@ export const appwriteService = {
   }: DeleteDocumentInput) => {
     return databases.deleteDocument(databaseId, collectionId, documentId);
   },
-
-  completeOAuthSession: async ({
-    userId,
-    secret,
-  }: {
-    userId: string;
-    secret: string;
-  }) => {
-    return account.createSession({ userId, secret });
-  },
 };
 
 export const buildDocumentQuery = (...queries: string[]) => queries;

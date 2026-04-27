@@ -1,13 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { ReactNode, useEffect, useState } from "react";
+import { lazy, ReactNode, Suspense, useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LoadingScreen from "./app/components/LoadingScreen";
-import OAuthScreen from "./app/oauth";
 import CourseDetailScreen from "./app/screens/course-detail";
 import MainTabs from "./app/screens/maintabs";
 import MusicPlayerScreen from "./app/screens/music-player";
-import ReminderScreen from "./app/screens/reminder";
 import SignInScreen from "./app/screens/signin";
 import SignInSignupScreen from "./app/screens/signupsignIn";
 import TopicsScreen from "./app/screens/topics";
@@ -19,8 +17,17 @@ import { ThemeProvider } from "./themes/theme-context";
 import type { RootStackParamList } from "./types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
+const ReminderScreen = lazy(() => import("./app/screens/reminder"));
 
-const PUBLIC_ROUTES = new Set<string>(["Landing", "OAuth", "SignIn"]);
+function ReminderRoute() {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <ReminderScreen />
+    </Suspense>
+  );
+}
+
+const PUBLIC_ROUTES = new Set<string>(["Landing", "SignIn"]);
 const PROTECTED_ROUTES = new Set<string>([
   "Welcome",
   "Topics",
@@ -40,7 +47,6 @@ const linking = {
   config: {
     screens: {
       Landing: "",
-      OAuth: "oauth",
       SignIn: "signin",
       Welcome: "welcome",
       Topics: "topics",
@@ -103,11 +109,10 @@ function RootNavigator() {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Landing" component={SignInSignupScreen} />
-        <Stack.Screen name="OAuth" component={OAuthScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Topics" component={TopicsScreen} />
-        <Stack.Screen name="Reminder" component={ReminderScreen} />
+        <Stack.Screen name="Reminder" component={ReminderRoute} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="CourseDetail" component={CourseDetailScreen} />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />

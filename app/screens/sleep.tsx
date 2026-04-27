@@ -1,13 +1,14 @@
 import React from "react";
 import {
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PlaceholderCarousel from "../../assets/images/placeholder-coming-soon-160x110.svg";
 import LogoWhite from "../../assets/images/svg/logo-white.svg";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
@@ -53,6 +54,7 @@ const SleepCard = ({
 
 const RecommendationCard = ({
   artColor,
+  image,
   meta,
   onPress,
   title,
@@ -62,9 +64,23 @@ const RecommendationCard = ({
     onPress={onPress}
     style={stylesBase.recommendationCard}
   >
-    <View
-      style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
-    />
+    {/** Show image when available, otherwise themed placeholder */}
+    {/** Keep artColor as background for the placeholder container */}
+    {/** Placeholder is wrapped to match image sizing */}
+    {/** If in future items include `image`, it will render the image instead */}
+    {image ? (
+      <Image source={image} style={stylesBase.recommendationArt} />
+    ) : (
+      <View
+        style={[stylesBase.recommendationArt, { backgroundColor: artColor }]}
+      >
+        <View style={stylesBase.placeholderWrapper}>
+          <View style={stylesBase.placeholderInner}>
+            <PlaceholderCarousel width={120} height={80} />
+          </View>
+        </View>
+      </View>
+    )}
     <Text style={stylesBase.recommendationTitle}>{title}</Text>
     <Text style={stylesBase.recommendationMeta}>{meta}</Text>
   </TouchableOpacity>
@@ -90,7 +106,7 @@ const SleepScreen = () => {
         duration: course.duration,
         favoriteCount: course.favoriteCount,
         heroImageUrl: course.heroImageUrl,
-        id: course.id,
+        courseID: course.courseID,
         listeningCount: course.listeningCount,
         narratorSessions: course.narratorSessions,
         subtitle: course.subtitle,
@@ -108,7 +124,7 @@ const SleepScreen = () => {
           "A soothing sleep session for helping the body unwind and the mind drift toward rest.",
         duration: item.duration ?? "12 MIN",
         favoriteCount: "22,640 Favorites",
-        id: item.id,
+        courseID: item.id,
         listeningCount: "35,210 Listening",
         subtitle: item.meta,
         textColor: "#3F414E",
@@ -155,7 +171,7 @@ const SleepScreen = () => {
         <View style={styleSheet.cardsRow}>
           {cards.map((card) => (
             <SleepCard
-              key={card.title}
+              key={card.courseID}
               {...card}
               onPress={() => openCourseDetail(card)}
             />
@@ -168,13 +184,14 @@ const SleepScreen = () => {
 
         <HorizontalCarousel
           data={recommendations}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <RecommendationCard
               {...item}
               onPress={() => openRecommendation(item)}
             />
           )}
+          placeholder={<PlaceholderCarousel width={160} height={110} />}
           contentContainerStyle={styleSheet.recommendationsRow}
         />
       </ScrollView>
@@ -226,6 +243,18 @@ const stylesBase = StyleSheet.create({
     height: 110,
     marginBottom: 12,
     width: "100%",
+  },
+  placeholderWrapper: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  placeholderInner: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    overflow: "hidden",
   },
   recommendationCard: {
     flex: 1,

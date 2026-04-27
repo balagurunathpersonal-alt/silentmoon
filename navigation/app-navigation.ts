@@ -1,9 +1,9 @@
 import {
   CommonActions,
+  StackActions,
   createNavigationContainerRef,
   useNavigation,
 } from "@react-navigation/native";
-import { StackActions } from "@react-navigation/native";
 import type {
   RootNavigationProp,
   RootStackParamList,

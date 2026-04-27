@@ -1,16 +1,17 @@
 import React from "react";
 import {
-    FlatList,
-    ListRenderItemInfo,
-    StyleSheet,
-    View,
-    ViewStyle,
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet,
+  View,
+  ViewStyle,
 } from "react-native";
 
 type Props<T> = {
   data: T[];
   renderItem: (info: ListRenderItemInfo<T>) => React.ReactElement | null;
   keyExtractor?: (item: T, index: number) => string;
+  placeholder?: React.ReactElement | null;
   itemWidth?: number;
   itemSpacing?: number;
   contentContainerStyle?: ViewStyle;
@@ -20,6 +21,7 @@ function HorizontalCarousel<T>({
   data,
   renderItem,
   keyExtractor,
+  placeholder = null,
   itemWidth = 160,
   itemSpacing = 16,
   contentContainerStyle,
@@ -33,7 +35,7 @@ function HorizontalCarousel<T>({
         { width: itemWidth, marginRight: itemSpacing },
       ]}
     >
-      {renderItem(info)}
+      {renderItem(info) ?? placeholder}
     </View>
   );
 

@@ -33,7 +33,6 @@ Silent Moon is a React Native meditation app for guided mindfulness, sleep, musi
 ├── App.tsx                         # Root providers and navigation container
 ├── app/
 │   ├── components/                 # Shared UI components
-│   ├── oauth.tsx                   # OAuth redirect handling
 │   └── screens/                    # App screens
 ├── assets/                         # Images and SVG assets
 ├── constants/                      # App and Appwrite constants

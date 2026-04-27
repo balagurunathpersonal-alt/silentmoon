@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80" role="img" aria-label="Coming soon placeholder">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1">
+      <stop offset="0%" stop-color="#F2F3F7"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8E97FD"/>
+      <stop offset="100%" stop-color="#7A86F5"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="80" rx="8" fill="url(#g1)" />
+
+  <path d="M0 58 C22 44 50 72 86 56 C104 48 120 54 120 54 L120 80 L0 80 Z" fill="url(#g2)" opacity="0.08" />
+
+  <g transform="translate(90,12)">
+    <circle cx="0" cy="0" r="14" fill="#FFFFFF" />
+    <circle cx="5" cy="-5" r="10" fill="#8E97FD" opacity="0.18" />
+  </g>
+
+  <g>
+    <rect x="12" y="14" width="96" height="40" rx="6" fill="#FFFFFF" opacity="0.9"/>
+    <text x="50%" y="52%" font-family="Inter, Roboto, Arial, sans-serif" font-size="12" fill="#3F414E" text-anchor="middle" font-weight="700">Coming soon...</text>
+  </g>
+</svg>

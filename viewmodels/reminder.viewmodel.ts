@@ -219,7 +219,7 @@ export const useReminderViewModel = () => {
         REMINDER_STRINGS.alerts.canceledTitle,
         REMINDER_STRINGS.alerts.canceledMessage,
       );
-    } catch (e) {
+    } catch {
       Alert.alert(
         REMINDER_STRINGS.alerts.cancelErrorTitle,
         REMINDER_STRINGS.alerts.cancelErrorMessage,

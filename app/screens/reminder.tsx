@@ -29,7 +29,6 @@ export default function ReminderScreen() {
     selectedDays,
     toggleDay,
     scheduleReminder,
-    cancelScheduled,
     closeReminderFlow,
   } = useReminderViewModel();
 

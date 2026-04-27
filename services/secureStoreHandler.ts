@@ -42,8 +42,6 @@ export class SecureStoreHandler {
         await Keychain.setGenericPassword(username, secret, {
           service: this.secretKey,
         });
-      } else {
-        await Keychain.resetGenericPassword({ service: this.secretKey });
       }
 
       return true;
@@ -59,17 +57,11 @@ export class SecureStoreHandler {
       const provider = await AsyncStorage.getItem(this.providerKey);
       const loggedInAt = await AsyncStorage.getItem(this.loggedInAtKey);
 
-      const creds = await Keychain.getGenericPassword({
-        service: this.secretKey,
-      });
-      const secret = creds ? creds.password : undefined;
-
       if (username) {
         return {
           username,
           provider: provider as AuthProvider | undefined,
           loggedInAt: loggedInAt ?? undefined,
-          secret: secret ?? undefined,
         };
       }
       return null;

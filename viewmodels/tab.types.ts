@@ -13,7 +13,7 @@ export type ActionCard = {
   duration: string;
   favoriteCount?: string;
   heroImageUrl?: string;
-  id: string;
+  courseID: string;
   lessons?: string[];
   listeningCount?: string;
   narratorSessions?: {
