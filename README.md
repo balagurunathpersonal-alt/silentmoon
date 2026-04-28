@@ -132,6 +132,8 @@ Remove-Item -Recurse -Force android\app\.cxx, android\.gradle, android\build, an
 npm run android
 ```
 
+Debug Android builds target `arm64-v8a` and `x86_64`. If Gradle keeps trying old `armeabi-v7a` or `x86` CMake folders after pulling updates, run the cleanup command above before rebuilding.
+
 If `:app:validateSigningDebug` fails, clean the same generated folders and run again. Debug signing uses each machine's local Android debug keystore when `android/app/debug.keystore` is not present.
 
 Run on iOS:
