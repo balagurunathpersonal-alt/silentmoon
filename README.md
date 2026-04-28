@@ -52,7 +52,23 @@ Install the following before running the app:
 - Node.js
 - npm
 - Android Studio with an Android emulator or a connected Android device
+- JDK 17, or Android Studio's bundled JDK
 - Xcode and CocoaPods for iOS development on macOS
+
+For Android builds, keep machine-specific paths out of committed project files:
+
+- Set `JAVA_HOME` locally if Gradle cannot find Java.
+- Let Android Studio create `android/local.properties`, or create it yourself with your local SDK path.
+
+Example `android/local.properties` values:
+
+```properties
+# macOS
+sdk.dir=/Users/<user>/Library/Android/sdk
+
+# Windows
+sdk.dir=C:\\Users\\<user>\\AppData\\Local\\Android\\Sdk
+```
 
 ## Getting Started
 
