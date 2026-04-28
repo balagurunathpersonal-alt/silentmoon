@@ -125,6 +125,13 @@ Run on Android:
 npm run android
 ```
 
+On Windows, if Android native builds fail with `Filename longer than 260 characters`, keep the project in a short path such as `C:\src\silentmoon` and clean generated native build output:
+
+```powershell
+Remove-Item -Recurse -Force android\app\.cxx, android\.gradle, android\build, android\app\build -ErrorAction SilentlyContinue
+npm run android
+```
+
 Run on iOS:
 
 ```bash

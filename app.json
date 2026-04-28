@@ -8,7 +8,7 @@
     "scheme": "appwrite-callback-69ead33e003129ed4fea",
     "platforms": ["ios", "android"],
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
