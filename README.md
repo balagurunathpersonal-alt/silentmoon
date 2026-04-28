@@ -132,6 +132,8 @@ Remove-Item -Recurse -Force android\app\.cxx, android\.gradle, android\build, an
 npm run android
 ```
 
+If `:app:validateSigningDebug` fails, clean the same generated folders and run again. Debug signing uses each machine's local Android debug keystore when `android/app/debug.keystore` is not present.
+
 Run on iOS:
 
 ```bash
