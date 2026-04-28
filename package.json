@@ -3,8 +3,9 @@
   "main": "index.js",
   "version": "1.0.0",
   "scripts": {
+    "android:preflight": "node scripts/android-preflight.js",
     "start": "npx react-native start",
-    "android": "npx react-native run-android",
+    "android": "npm run android:preflight && npx react-native run-android",
     "ios": "npx react-native run-ios",
     "start:metro": "npx react-native start"
   },

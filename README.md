@@ -52,13 +52,32 @@ Install the following before running the app:
 - Node.js
 - npm
 - Android Studio with an Android emulator or a connected Android device
-- JDK 17, or Android Studio's bundled JDK
+- JDK 17, or Android Studio's bundled JDK if it is compatible with Gradle
 - Xcode and CocoaPods for iOS development on macOS
 
 For Android builds, keep machine-specific paths out of committed project files:
 
-- Set `JAVA_HOME` locally if Gradle cannot find Java.
+- Use JDK 17 for the most reliable Android builds. This repo includes `.java-version` for version managers.
+- Set `JAVA_HOME` locally if Gradle cannot find Java or if your machine defaults to a newer unsupported Java version.
 - Let Android Studio create `android/local.properties`, or create it yourself with your local SDK path.
+
+Check your Java version:
+
+```bash
+java -version
+```
+
+Windows `JAVA_HOME` example:
+
+```bat
+setx JAVA_HOME "C:\Program Files\Java\jdk-17"
+```
+
+macOS `JAVA_HOME` example:
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+```
 
 Example `android/local.properties` values:
 
