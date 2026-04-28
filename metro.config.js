@@ -1,7 +1,12 @@
 const path = require("path");
-const { getDefaultConfig } = require("expo/metro-config");
+const { getDefaultConfig: getExpoDefaultConfig } = require("expo/metro-config");
+const {
+  getDefaultConfig: getReactNativeDefaultConfig,
+  mergeConfig,
+} = require("@react-native/metro-config");
 
-const config = getDefaultConfig(__dirname);
+const reactNativeConfig = getReactNativeDefaultConfig(__dirname);
+const config = getExpoDefaultConfig(__dirname);
 const appwriteSdkPath = path.join(
   __dirname,
   "node_modules/react-native-appwrite/dist/cjs/sdk.js",
@@ -39,4 +44,4 @@ config.resolver = {
 // ensure metro watches the project root
 config.watchFolders = [path.resolve(__dirname)];
 
-module.exports = config;
+module.exports = mergeConfig(reactNativeConfig, config);

@@ -55,6 +55,8 @@ Install the following before running the app:
 - JDK 17, or Android Studio's bundled JDK if it is compatible with Gradle
 - Xcode and CocoaPods for iOS development on macOS
 
+Use an LTS Node.js release for Metro and React Native. This project supports Node.js 20, 22, or 24. Do not use Node.js 25. The repo includes `.nvmrc` for Node version managers.
+
 For Android builds, keep machine-specific paths out of committed project files:
 
 - Use JDK 17 for the most reliable Android builds. This repo includes `.java-version` for version managers.
@@ -95,6 +97,20 @@ Install dependencies:
 
 ```bash
 npm install
+```
+
+If you previously installed dependencies with an older project version, remove the old install first:
+
+```bash
+rm -rf node_modules
+npm ci
+```
+
+Windows PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force node_modules
+npm ci
 ```
 
 Start Metro:
