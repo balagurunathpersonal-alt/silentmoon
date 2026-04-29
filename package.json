@@ -8,6 +8,7 @@
   "scripts": {
     "preflight": "node scripts/env-preflight.js",
     "android:preflight": "node scripts/android-preflight.js",
+    "clean:android": "node scripts/clean-android.js",
     "start": "npm run preflight && npx react-native start",
     "android": "npm run preflight && npm run android:preflight && npx react-native run-android",
     "ios": "npx react-native run-ios",
