@@ -1,4 +1,5 @@
 import { useRoute } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
   FlatList,
   ImageBackground,
@@ -54,6 +55,13 @@ export default function TopicsScreen() {
   const navigation = useAppNavigationHandler();
   const route = useRoute();
   const reminderReturnTo = route.params?.reminderReturnTo;
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    // static content — simulate refresh briefly
+    setTimeout(() => setRefreshing(false), 700);
+  };
 
   const handlePress = (item) => {
     // Navigate to the reminder screen and pass topic details as params
@@ -92,6 +100,8 @@ export default function TopicsScreen() {
           contentContainerStyle={styles.listContent}
           columnWrapperStyle={styles.row}
           showsVerticalScrollIndicator={false}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
         />
       </View>
     </SafeAreaView>

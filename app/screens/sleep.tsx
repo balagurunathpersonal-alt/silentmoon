@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlaceholderCarousel from "../../assets/images/placeholder-coming-soon-160x110.svg";
@@ -13,6 +14,7 @@ import LogoWhite from "../../assets/images/svg/logo-white.svg";
 import { useAppNavigationHandler } from "../../navigation/app-navigation";
 import { darkTheme, lightTheme } from "../../themes/themes";
 import { useSleepViewModel } from "../../viewmodels/sleep.viewmodel";
+import { getRecommendations } from "../../services/recommendation-service";
 import { ActionCard, RecommendationItem } from "../../viewmodels/tab.types";
 import HorizontalCarousel from "../components/HorizontalCarousel";
 
@@ -96,8 +98,20 @@ const SleepScreen = () => {
     theme,
     title,
   } = useSleepViewModel();
+  const [refreshing, setRefreshing] = useState(false);
+  const [localRecommendations, setLocalRecommendations] =
+    useState<typeof recommendations | null>(null);
   const navigation = useAppNavigationHandler();
   const styleSheet = styles(theme);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const items = await getRecommendations("sleep", 6);
+      setLocalRecommendations(items as any);
+    } finally {
+      setRefreshing(false);
+    }
+  };
   const openCourseDetail = (course: ActionCard) => {
     navigation.navigate("CourseDetail", {
       course: {
@@ -138,6 +152,14 @@ const SleepScreen = () => {
       <ScrollView
         contentContainerStyle={styleSheet.scrollContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.buttonColor ?? "#8E97FD"]}
+            tintColor={theme.buttonColor ?? "#8E97FD"}
+          />
+        }
       >
         <View style={styleSheet.header}>
           <LogoWhite width={168} height={30} />
@@ -183,7 +205,7 @@ const SleepScreen = () => {
         </View>
 
         <HorizontalCarousel
-          data={recommendations}
+          data={localRecommendations ?? recommendations}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <RecommendationCard

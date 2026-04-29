@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from "../../assets/images/svg/logo.svg";
@@ -48,6 +49,12 @@ const ProfileScreen = () => {
     subtitle,
     theme,
   } = useProfileViewModel();
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+    // profile info comes from context/hooks; briefly show spinner
+    setTimeout(() => setRefreshing(false), 700);
+  };
   const styleSheet = styles(theme);
 
   return (
@@ -55,6 +62,14 @@ const ProfileScreen = () => {
       <ScrollView
         contentContainerStyle={styleSheet.scrollContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.buttonColor ?? "#8E97FD"]}
+            tintColor={theme.buttonColor ?? "#8E97FD"}
+          />
+        }
       >
         <View style={styleSheet.header}>
           <Logo width={168} height={30} />
